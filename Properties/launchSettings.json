@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "snoopest": {
+      "commandName": "Project",
+      "commandLineArgs": "8546,localhost:8545"
+    }
+  }
+}
