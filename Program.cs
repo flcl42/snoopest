@@ -53,11 +53,11 @@ static async Task StartListener(ArgumentSet args)
             HttpListenerContext context = await listener.GetContextAsync();
             if (context.Request.IsWebSocketRequest)
             {
-                await HandleWebSocketRequest(context, args);
+                _ = HandleWebSocketRequest(context, args);
             }
             else
             {
-                await HandleHttpRequest(context, args);
+                _ = HandleHttpRequest(context, args);
             }
         }
         catch (Exception ex)
@@ -88,11 +88,12 @@ static async Task HandleHttpRequest(HttpListenerContext context, ArgumentSet arg
         using StreamReader requestStream = new(request.InputStream);
         string requestBody = await requestStream.ReadToEndAsync();
         proxyRequest.Content = new StringContent(requestBody, Encoding.UTF8);
-        
-        if (response.ContentType == "application/json")
-        {
-            Console.WriteLine($"\u001b[38;5;{args.Index}m{Time()} >> {requestBody}");
-        }
+
+        Console.WriteLine($"\u001b[38;5;{args.Index}m{Time()} >> {request.HttpMethod} {request.Url}\n{requestBody}");
+    }
+    else
+    {
+        Console.WriteLine($"\u001b[38;5;{args.Index}m{Time()} >> {request.HttpMethod} {request.Url}");
     }
 
     // Send request to the target host
@@ -109,11 +110,7 @@ static async Task HandleHttpRequest(HttpListenerContext context, ArgumentSet arg
     await response.OutputStream.WriteAsync(responseBytes, 0, responseBytes.Length);
     response.OutputStream.Close();
 
-    if (response.ContentType == "application/json")
-    {
-        Console.WriteLine($"\u001b[38;5;{args.Index}m{Time()} << {Encoding.UTF8.GetString(responseBytes)}");
-    }
-
+    Console.WriteLine($"\u001b[38;5;{args.Index}m{Time()} << {Encoding.UTF8.GetString(responseBytes)}");
 }
 
 static string Time() => DateTime.Now.ToString("HH:mm:ss.fff");
