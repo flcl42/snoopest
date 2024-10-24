@@ -6,13 +6,13 @@
 From shell
 
 ```bash
-./snoopest flcl42/snoopest 8546,localhost:8545 8552,localhost:8551 4001,localhost:4000 8553,localhost:8550
+./snoopest 8546,localhost:8545 8552,localhost:8551 4001,localhost:4000 8553,localhost:8550
 ```
 
 From docker
 
 ```bash
-docker run flcl42/snoopest 8546,hosh.docker.internal:8545
+docker run flcl42/snoopest 8546,localhost:8545 8552,localhost:8551 4001,localhost:4000 8553,localhost:8550
 ```
 
 ## Troubleshooting
